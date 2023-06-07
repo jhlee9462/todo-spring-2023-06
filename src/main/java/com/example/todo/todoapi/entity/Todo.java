@@ -1,4 +1,4 @@
-package com.example.todo.entity;
+package com.example.todo.todoapi.entity;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

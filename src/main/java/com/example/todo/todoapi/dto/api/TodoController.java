@@ -1,9 +1,9 @@
-package com.example.todo.dto.api;
+package com.example.todo.todoapi.dto.api;
 
-import com.example.todo.dto.request.TodoCreateRequestDTO;
-import com.example.todo.dto.request.TodoModifyRequestDTO;
-import com.example.todo.dto.response.TodoListResponseDTO;
-import com.example.todo.dto.service.TodoService;
+import com.example.todo.todoapi.dto.request.TodoCreateRequestDTO;
+import com.example.todo.todoapi.dto.request.TodoModifyRequestDTO;
+import com.example.todo.todoapi.dto.response.TodoListResponseDTO;
+import com.example.todo.todoapi.dto.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

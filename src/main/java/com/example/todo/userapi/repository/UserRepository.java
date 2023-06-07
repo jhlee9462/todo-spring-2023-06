@@ -1,0 +1,19 @@
+package com.example.todo.userapi.repository;
+
+import com.example.todo.userapi.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, String> {
+
+    // 쿼리 메서드
+
+    // 이메일로 회원정보 조회
+    Optional<User> findByEmail(String email); // 단일 조회는 Optional로 받는 편이 좋다.
+
+    // 이메일 중복체크
+//    @Query("select count(*) from User u where u.email = :email") // existsBy로 메서드 이름을 만들면 이 jpql이 나간다.
+    boolean existsByEmail(String email);
+
+}
