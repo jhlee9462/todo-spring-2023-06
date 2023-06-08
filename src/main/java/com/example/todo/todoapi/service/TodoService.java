@@ -1,4 +1,4 @@
-package com.example.todo.todoapi.dto.service;
+package com.example.todo.todoapi.service;
 
 import com.example.todo.todoapi.dto.request.TodoCreateRequestDTO;
 import com.example.todo.todoapi.dto.request.TodoModifyRequestDTO;
