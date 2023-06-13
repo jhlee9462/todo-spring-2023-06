@@ -1,9 +1,12 @@
 package com.example.todo.auth;
 
+import com.example.todo.userapi.entity.Role;
 import com.example.todo.userapi.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.Map;
 
 // 역할 : 토큰을 발급하고, 서명위조를 검사하는 객체
 @Service
+@Slf4j
 public class TokenProvider {
 
     // 서명에 사용할 값 (512비트 이상의 랜덤 문자열)
@@ -36,7 +40,7 @@ public class TokenProvider {
         // 추가 클레임 정의
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", userEntity.getEmail());
-        claims.put("role", userEntity.getRole());
+        claims.put("role", userEntity.getRole().toString()); // Enum 으로 넣으면 에러가 발생한다
 
         // 토큰 생성
         return Jwts.builder()
@@ -47,14 +51,41 @@ public class TokenProvider {
                         , SignatureAlgorithm.HS512
                 )
                 // token payload에 들어갈 클레임 설정
+                .setClaims(claims) // 추가 클레임은 먼저 설정해야 함
+                // 여기까지가 JWT를 만들 때 항상 넣는 데이터
                 .setIssuer("바닐라겅듀") // iss : 발급자 정보, 회사 이름이나 등등을 쓴다
                 .setIssuedAt(new Date()) // iat : 발급 시각, LocalDate 지원 안한다
                 .setExpiration(expiry) // exp : 만료 시각
                 .setSubject(userEntity.getId()) // sub : 토큰을 식별할 수 있는 주요데이터
-                // 여기까지가 JWT를 만들 때 항상 넣는 데이터
-                .setClaims(claims)
                 .compact();
 
+    }
+
+    /**
+     * 클라이언트가 전송한 토큰을 디코딩하여 토큰의 위조여부를 확인
+     * 토큰을 JSON으로 파싱하여 클레임 ( 토큰정보 ) 를 리턴
+     * @param token
+     * @return - 토큰 안에 있는 인증된 유저정보를 반환
+     */
+    public TokenUserInfo validateAndGetTokenUserInfo(String token) {
+
+        // 해체할 때 쓰는 빌더
+        Claims claims = Jwts.parserBuilder()
+                // 토큰 발급자의 발급 당시의 서명을 넣어줌
+                .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                // 서명 위조 검사 : 위조된 경우 예외가 발생합니다.
+                // 위조가 되지 않은 경우 페이로드를 리턴
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        log.info("claims : {}", claims);
+
+        return TokenUserInfo.builder()
+                .userId(claims.getSubject())
+                .email(claims.get("email", String.class))
+                .role(Role.valueOf(claims.get("role", String.class))) // String 으로 꺼낸 다음에 Enum 으로 바꿔준다
+                .build();
     }
 
 }

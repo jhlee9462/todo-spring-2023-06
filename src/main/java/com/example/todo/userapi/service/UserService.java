@@ -75,6 +75,8 @@ public class UserService {
         // JWT를 클라이언트에게 저장해야 함
         String token = tokenProvider.createToken(user);
 
+        log.info("token : {}", token);
+
         return new LoginResponseDTO(user, token);
     }
 }
