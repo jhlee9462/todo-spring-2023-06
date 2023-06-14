@@ -4,6 +4,7 @@ import com.example.todo.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,6 +15,8 @@ import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
+// 자동 권한검사를 수행하기 위한 설정
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -36,10 +39,12 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 // 어떤 요청에서 인증을 안 할 것인지, 언제 할 것인지 설정
-                .authorizeRequests().antMatchers("/", "/api/auth/**").permitAll()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.PUT, "/api/auth/promote").authenticated() // PUT 요청은 인증하게 해라
+                .antMatchers("/", "/api/auth/**").permitAll() // 허가
 //                .antMatchers(HttpMethod.POST, "/api/todos").hasRole("ADMIN")
                 .anyRequest().authenticated()
-                ;
+        ;
 
         // 토큰인증 필터 연결
         http.addFilterAfter(
@@ -49,7 +54,6 @@ public class WebSecurityConfig {
 
         return http.build();
     }
-
 
 
 }

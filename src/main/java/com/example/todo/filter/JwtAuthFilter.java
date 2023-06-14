@@ -47,7 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 // 인가 정보 리스트 - 여러 권한이 동시에 있을 수 있기 때문에 리스트로 만든다
                 List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
-                authorityList.add(new SimpleGrantedAuthority(tokenUserInfo.getRole().toString()));
+                authorityList.add(new SimpleGrantedAuthority("ROLE_" + tokenUserInfo.getRole().toString()));
 
                 // 인증 완료 처리
                 // - 스프링 시큐리티에게 인증정보를 전달해서 전역적으로 앱에서 인증정보를 활용할 수 있게 설정
