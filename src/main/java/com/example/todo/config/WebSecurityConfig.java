@@ -41,6 +41,7 @@ public class WebSecurityConfig {
                 // 어떤 요청에서 인증을 안 할 것인지, 언제 할 것인지 설정
                 .authorizeRequests()
                 .antMatchers(HttpMethod.PUT, "/api/auth/promote").authenticated() // PUT 요청은 인증하게 해라
+                .antMatchers("/api/auth/load-profile").authenticated() // 프로필 사진 요청은 인증받게
                 .antMatchers("/", "/api/auth/**").permitAll() // 허가
 //                .antMatchers(HttpMethod.POST, "/api/todos").hasRole("ADMIN")
                 .anyRequest().authenticated()

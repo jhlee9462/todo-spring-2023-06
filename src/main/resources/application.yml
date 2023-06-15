@@ -7,7 +7,6 @@ spring:
     username: root
     password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
-
   jpa:
     #    show-sql: true # ?? ??? ??? ???? ??
     # ??? ?? ? ?? ??? ?? ???? ??
@@ -18,6 +17,11 @@ spring:
       hibernate:
         format_sql: true # sql ? ????? ??? ??
     database: mysql
+  # file max size limit
+  servlet:
+    multipart:
+      max-file-size: 10MB # each file max size
+      max-request-size: 20MB # full request max size
 
 logging.level:
   org.hibernate.SQL: debug # ? ? ??? ????? ???? ?? ?? ??? ? ? ??.
@@ -29,3 +33,7 @@ springdoc:
 
 jwt:
   secret: FdU3DlUyPt9/QikVJPodSp3SDU7h0602uyN754mPIsKQO3bG0Hr+srp/ZpCZiXAnStxt4WP6RNnw1vpiWYwuFg==
+
+# 업로드파일 저장 위치
+upload:
+  path: C:/intellij_projects/todo_upload

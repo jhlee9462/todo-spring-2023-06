@@ -28,12 +28,23 @@ public class UserSignUpRequestDTO {
     @Size(min = 2, max = 5)
     private String userName;
 
+    private String profileImage;
+
     // 엔터티로 변경하는 메서드
     public User toEntity() {
         return User.builder()
                 .email(email)
                 .password(password)
                 .userName(userName)
+                .build();
+    }
+
+    public User toEntity(String uploadFilePath) {
+        return User.builder()
+                .email(email)
+                .password(password)
+                .userName(userName)
+                .profileImg(uploadFilePath)
                 .build();
     }
 
