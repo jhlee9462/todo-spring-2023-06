@@ -37,3 +37,11 @@ jwt:
 # 업로드파일 저장 위치
 upload:
   path: C:/intellij_projects/todo_upload
+
+# s3 접근 설정
+aws:
+  credentials:
+    accessKey: AKIAWTIOGNSVM4JCSVME
+    secretKey: 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
+  region: ap-northeast-2
+  bucketName: s3-bucket-admin-jhlee

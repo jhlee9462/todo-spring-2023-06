@@ -2,6 +2,7 @@ package com.example.todo.userapi.service;
 
 import com.example.todo.auth.TokenProvider;
 import com.example.todo.auth.TokenUserInfo;
+import com.example.todo.aws.S3Service;
 import com.example.todo.exception.DuplicatedEmailException;
 import com.example.todo.exception.NoRegisteredArgumentsException;
 import com.example.todo.userapi.dto.request.LoginRequestDTO;
@@ -30,6 +31,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final TokenProvider tokenProvider;
+    private final S3Service s3Service;
 
     @Value("${upload.path}")
     private String uploadRootPath;
@@ -129,12 +131,15 @@ public class UserService {
         // 파일명을 유니크하게 변경
         String uniqueFileName = UUID.randomUUID() + "_" + originalFile.getOriginalFilename();
 
-        // 파일을 저장
-        File uploadFile = new File(uploadRootPath + "/" + uniqueFileName);
-        originalFile.transferTo(uploadFile);
+//        // 파일을 저장
+//        File uploadFile = new File(uploadRootPath + "/" + uniqueFileName);
+//        originalFile.transferTo(uploadFile);
 
-        return uniqueFileName;
+        // 파일을 S3 버킷에 저장
+
+        return s3Service.uploadToBucket(originalFile.getBytes(), uniqueFileName);
     }
+
 
     public String getProfilePath(String userId) {
         return uploadRootPath + "/" + userRepository.findById(userId)
