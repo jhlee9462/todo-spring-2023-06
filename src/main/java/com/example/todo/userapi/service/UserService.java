@@ -142,7 +142,7 @@ public class UserService {
 
 
     public String getProfilePath(String userId) {
-        return uploadRootPath + "/" + userRepository.findById(userId)
+        return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("일치하는 회원 정보가 없습니다."))
                 .getProfileImg();
     }

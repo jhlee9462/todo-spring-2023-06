@@ -51,7 +51,7 @@ public class S3Service {
      */
     public String uploadToBucket(byte[] uploadFile, String fileName) {
 
-        // 업로드할 파일을 S3 객체로 생성
+        // 업로드할 파일정보 을 S3 객체로 생성
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(fileName)

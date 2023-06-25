@@ -164,7 +164,9 @@ public class UserController {
 
             headers.setContentType(contentType);
 
-            return ResponseEntity.ok().body(fileData);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(fileData);
 
         } catch (IOException e) {
             e.printStackTrace();
