@@ -38,6 +38,20 @@ jwt:
 upload:
   path: C:/intellij_projects/todo_upload
 
+# aws 설정
+cloud:
+  aws:
+    s3:
+      bucket: my.first.example.sss.bucket
+    credentials:
+      access-key: AKIA4LMXKQQFGT365H7R
+      secret-key: SpmcRDmbpr+NrCRxfCSMVucuV5LaMZ0QV4HJvygk
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+
 # s3 접근 설정
 aws:
   credentials:
